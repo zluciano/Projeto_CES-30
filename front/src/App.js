@@ -4,10 +4,10 @@ import './App.css';
 
 function App() {
   let obj;
-  fetch('localhost:3001') // Call the fetch function passing the url of the API as a parameter
+  /*fetch('localhost:3001') // Call the fetch function passing the url of the API as a parameter
   .then(function(returnA) {
       obj = returnA
-  })
+  })*/
   console.log("obj = " + obj)
   return (
     <div className="App">
