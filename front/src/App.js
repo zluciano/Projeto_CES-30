@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 import { get } from 'axios'
+import {XYPlot, XAxis, YAxis, HorizontalGridLines, LineSeries} from 'react-vis';
+
 import './App.css'
 
 class App extends Component {
@@ -22,11 +24,17 @@ class App extends Component {
   }
 
   render = () => {
-    console.log(this.state.value.length)
     return (
       <div>
-        response length
-        <p>{this.state.value.length}</p>
+        <XYPlot
+          width={300}
+          height={300}>
+          <HorizontalGridLines />
+          <LineSeries
+            data={this.state.value}/>
+          <XAxis />
+          <YAxis />
+        </XYPlot>        
       </div>
       );
   }
