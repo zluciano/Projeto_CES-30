@@ -11,7 +11,7 @@ var app = express()
     })
   );
 
-app.get('/', (req, res) => {
+app.POST('/', (req, res) => {
   let response = {
     values: [
       { x:1, y: 2 },
