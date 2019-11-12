@@ -16,7 +16,16 @@ cd front
 npm install
 
 
+## Install back
+cd back
+npm install
+
 ## Run Front
 
 cd front
+npm start
+
+## Run Back
+
+cd back
 npm start

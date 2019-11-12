@@ -3,6 +3,12 @@ import logo from './logo.svg';
 import './App.css';
 
 function App() {
+  let obj;
+  fetch('localhost:3001') // Call the fetch function passing the url of the API as a parameter
+  .then(function(returnA) {
+      obj = returnA
+  })
+  console.log("obj = " + obj)
   return (
     <div className="App">
       <header className="App-header">
@@ -16,7 +22,7 @@ function App() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          Learn React
+          {{obj}}
         </a>
       </header>
     </div>
