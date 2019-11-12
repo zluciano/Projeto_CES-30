@@ -1,5 +1,15 @@
 var express = require('express');
-var app = express();
+var cors = require('cors');
+var bodyParser = require('body-parser')
+
+var app = express()
+  .use(cors())
+  .use(bodyParser.json())
+  .use(
+    bodyParser.urlencoded({
+      extended: true,
+    })
+  );
 
 app.get('/', (req, res) => {
   let response = {
@@ -17,6 +27,6 @@ app.get('/', (req, res) => {
   res.status(200).send(response);
 });
 
-app.listen(3000, () => {
-  console.log('Example app listening on port 3000!');
+app.listen(3001, () => {
+  console.log('Example app listening on port 3001!');
 });
