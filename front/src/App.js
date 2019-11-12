@@ -22,7 +22,7 @@ function App() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          {{obj}}
+          Test
         </a>
       </header>
     </div>
