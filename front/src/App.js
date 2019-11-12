@@ -8,7 +8,6 @@ class App extends Component {
   constructor(props){
     super(props)
     this.state = {
-      a: 1,
       value: [],
     }
   }
@@ -26,6 +25,7 @@ class App extends Component {
   render = () => {
     return (
       <div>
+        <h1>Grafico exemplo</h1>
         <XYPlot
           width={300}
           height={300}>
