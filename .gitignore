@@ -5,3 +5,4 @@ node_modules
 /venv
 database/microdados_enem2015/
 database/microdados_enem_por_escola/
+database/__pycache__/
