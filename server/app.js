@@ -8,11 +8,16 @@ let connection;
 (async function () {
   try {
     connection = await oracledb.getConnection({
-      user: 'IgorB',
-      password: 'IgorB',
+      user: 'IsabelleO',
+      password: 'IsabelleO',
       connectString: '(DESCRIPTION =(ADDRESS = (PROTOCOL = TCP)(HOST = 161.24.2.244)(PORT = 1521))(CONNECT_DATA =(SID= ORCL)))'
     });
+
     console.log("Successfully connected to Oracle!")
+    const res = await connection.execute(`
+      SELECT * FROM MUNICIPIO
+    `);
+    console.log(res);
   } catch (err) {
     console.log("Error: ", err);
   } finally {
@@ -54,10 +59,10 @@ app.get('/', (req, res) => {
 // app.get('/sql', (req, res) => {
 //   const query = req.body;
 //   const queryTest = "SELECT department_id, department_name "
-//   + "FROM departments "
-//   + "WHERE department_id < 70 "
-//   + "ORDER BY department_id"
-  
+//   "FROM departments "
+//   "WHERE department_id < 70 "
+//   "ORDER BY department_id"
+
 //   oracledb.getConnection({
 //     user          : "hr",
 //     password      : "welcome",
