@@ -8,9 +8,9 @@ let connection;
 (async function () {
   try {
     connection = await oracledb.getConnection({
-      user: 'YOUR_DATABASE_USER',
-      password: 'YOUR_DATABASE_PASSWORD',
-      connectString: 'localhost/yourorclpdb'
+      user: 'IgorB',
+      password: 'IgorB',
+      connectString: '161.24.2.244:1521/orcl'
     });
     console.log("Successfully connected to Oracle!")
   } catch (err) {
@@ -50,6 +50,31 @@ app.get('/', (req, res) => {
   }
   res.status(200).send(response);
 })
+
+// app.get('/sql', (req, res) => {
+//   const query = req.body;
+//   const queryTest = "SELECT department_id, department_name "
+//   + "FROM departments "
+//   + "WHERE department_id < 70 "
+//   + "ORDER BY department_id"
+  
+//   oracledb.getConnection({
+//     user          : "hr",
+//     password      : "welcome",
+//     connectString : "localhost/XE"
+//   },
+
+//   function(err, connection) {
+//     if (err) { console.error(err); return; }
+//     connection.execute(queryTest,
+//       function(err, result) {
+//         if (err) { console.error(err); return; }
+//         console.log(result.rows);
+//         const response = result.rows;
+//         res.status(200).send(response);
+//       });
+//   });
+// });
 
 app.listen(3001, () => {
   console.log('Example app listening on port 3001!');
