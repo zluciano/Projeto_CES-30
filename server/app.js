@@ -10,7 +10,7 @@ let connection;
     connection = await oracledb.getConnection({
       user: 'IgorB',
       password: 'IgorB',
-      connectString: '161.24.2.244:1521/orcl'
+      connectString: '(DESCRIPTION =(ADDRESS = (PROTOCOL = TCP)(HOST = 161.24.2.244)(PORT = 1521))(CONNECT_DATA =(SID= ORCL)))'
     });
     console.log("Successfully connected to Oracle!")
   } catch (err) {
