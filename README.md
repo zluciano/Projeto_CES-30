@@ -1,7 +1,7 @@
 # Projeto_CES-30
 
 
-## Install Front
+## Install Client
 
 sudo apt-get install nodejs
 sudo apt-get install npm
@@ -12,20 +12,30 @@ export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || pr
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
 
 
-cd front
+cd client
 npm install
 
 
-## Install back
-cd back
+## Install server
+cd server
 npm install
 
-## Run Front
+Enter in this link: 
+https://www.oracle.com/br/database/technologies/instant-client/linux-x86-64-downloads.html#ic_x64_inst
 
-cd front
+Download: Basic Package (ZIP)
+
+Then, enter in: 
+https://www.oracle.com/br/database/technologies/instant-client/linux-x86-64-downloads.html#ic_x64_inst
+
+And follow the 8 installation steps of the ZIP file
+
+## Run Client
+
+cd client
 npm start
 
-## Run Back
+## Run server
 
-cd back
+cd server
 npm start
