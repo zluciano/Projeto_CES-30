@@ -3,26 +3,6 @@ const cors = require('cors');
 const bodyParser = require('body-parser')
 const oracledb = require('oracledb');
 
-oracledb.getConnection({
-    user          : "hr",
-    password      : "welcome",
-    connectString : "localhost/XE"
-  },
-
-  function(err, connection) {
-    if (err) { console.error(err); return; }
-    connection.execute(
-      "SELECT department_id, department_name "
-    + "FROM departments "
-    + "WHERE department_id < 70 "
-    + "ORDER BY department_id",
-      function(err, result) {
-        if (err) { console.error(err); return; }
-        console.log(result.rows);
-      });
-  });
-
-
 let app = express()
   .use(cors())
   .use(bodyParser.json())
@@ -46,6 +26,31 @@ app.get('/', (req, res) => {
     ]
   };
   res.status(200).send(response);
+});
+
+app.get('/sql', (req, res) => {
+  const query = req.body;
+  const queryTest = "SELECT department_id, department_name "
+  + "FROM departments "
+  + "WHERE department_id < 70 "
+  + "ORDER BY department_id"
+  
+  oracledb.getConnection({
+    user          : "hr",
+    password      : "welcome",
+    connectString : "localhost/XE"
+  },
+
+  function(err, connection) {
+    if (err) { console.error(err); return; }
+    connection.execute(queryTest,
+      function(err, result) {
+        if (err) { console.error(err); return; }
+        console.log(result.rows);
+        const response = result.rows;
+        res.status(200).send(response);
+      });
+  });
 });
 
 app.listen(3001, () => {
