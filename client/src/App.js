@@ -1,8 +1,10 @@
 import React, { Component } from 'react'
 import { get } from 'axios'
 import {XYPlot, XAxis, YAxis, HorizontalGridLines, LineSeries} from 'react-vis';
-
+import './Page';
 import './App.css'
+
+import Page from './Page';
 
 class App extends Component {
   constructor(props){
@@ -25,7 +27,7 @@ class App extends Component {
   render = () => {
     return (
       <div>
-        <h1>Grafico exemplo</h1>
+        {/* <h1>Grafico exemplo</h1>
         <XYPlot
           width={300}
           height={300}>
@@ -34,7 +36,8 @@ class App extends Component {
             data={this.state.value}/>
           <XAxis />
           <YAxis />
-        </XYPlot>        
+        </XYPlot>         */}
+        <Page></Page>
       </div>
       );
   }

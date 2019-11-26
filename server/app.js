@@ -6,16 +6,16 @@ const oracledb = require('oracledb');
 let _connection = null;
 
 const getConnection = async () => {
-  try{
-    if(_connection === null) {
+  try {
+    if (_connection === null) {
       _connection = await oracledb.getConnection({
         user: 'IsabelleO',
         password: 'IsabelleO',
         connectString: '(DESCRIPTION =(ADDRESS = (PROTOCOL = TCP)(HOST = 161.24.2.244)(PORT = 1521))(CONNECT_DATA =(SID= ORCL)))'
       })
-      console.log('Connection opened =)')
+      console.log('Connection opened\n')
     } else {
-      console.log('Connection unopened =(')
+      console.log('Connection already opened\n')
     }
   } catch (err) {
     console.log("Error: ", err)
@@ -32,11 +32,11 @@ const closeConnection = async () => {
   }
 }
 
-const executeQuery = async (query) => {
+const executeQuery = async (query, params) => {
   try {
-    const connection = await getConnection();
-    return await connection.execute(query).then(res => res.rows);
-  } catch(err) {
+    const connection = await getConnection()
+    return await connection.execute(query, params).then(res => res.rows);
+  } catch (err) {
     console.log("Error: ", err)
     return null;
   }
@@ -67,11 +67,14 @@ app.get('/', (req, res) => {
   res.status(200).send(response)
 })
 
-app.get('/sql', async (req, res) => {
+app.get('/escola', async (req, res) => {
   const query = req.body;
   const teste = await executeQuery(`
-    SELECT * FROM MUNICIPIO
-  `)
+    SELECT MUNICIPIO.UF, MUNICIPIO.NOME
+    FROM MUNICIPIO
+    INNER JOIN ESCOLA ON MUNICIPIO.MUN_ID = ESCOLA.MUN_ID
+    WHERE ESCOLA.NOME_ESCOLA = :escola AND ROWNUM = 1
+  `, { escola: 'Poliedro' })
   res.status(200).send(teste)
 });
 
