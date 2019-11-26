@@ -5,6 +5,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Link from '@material-ui/core/Link';
 import Plot from './Plot';
+import Table from './Table';
 
 function Copyright() {
   return (
@@ -28,6 +29,9 @@ const useStyles = makeStyles(theme => ({
   main: {
     marginTop: theme.spacing(8),
     marginBottom: theme.spacing(2),
+  },
+  body: {
+    marginTop: '3vh',
   },
   footer: {
     padding: theme.spacing(3, 2),
@@ -53,13 +57,18 @@ export default function Page() {
           {'É também verificado a distribuição por municípios'}
         </Typography>
         <Typography variant="body1">
-            <Plot></Plot>
+            <div className={classes.body}>
+                {/* <Plot/> */}
+                <Table/>
+            </div>
         </Typography>
         </div>
       </Container>
       <footer className={classes.footer}>
         <Container maxWidth="md">
-          <Typography variant="body1">My sticky footer can be found here.</Typography>
+          <Typography variant="body1">
+              My sticky footer can be found here.
+          </Typography>
           <Copyright />
         </Container>
       </footer>
