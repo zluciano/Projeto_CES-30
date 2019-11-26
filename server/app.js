@@ -32,10 +32,10 @@ const closeConnection = async () => {
   }
 }
 
-const executeQuery = async (query, params) => {
+const executeQuery = async (query, params = {}) => {
   try {
     const connection = await getConnection()
-    return await connection.execute(query, params).then(res => res.rows);
+    return await connection.execute(query, params);
   } catch (err) {
     console.log("Error: ", err)
     return null;
@@ -69,12 +69,16 @@ app.get('/', (req, res) => {
 
 app.get('/escola', async (req, res) => {
   const query = req.body;
+  // const teste = await executeQuery(`
+  //   SELECT MUNICIPIO.UF, MUNICIPIO.NOME
+  //   FROM MUNICIPIO
+  //   INNER JOIN ESCOLA ON MUNICIPIO.MUN_ID = ESCOLA.MUN_ID
+  //   WHERE ESCOLA.NOME_ESCOLA = :escola AND ROWNUM = 1
+  // `, { escola: 'Poliedro' })
   const teste = await executeQuery(`
-    SELECT MUNICIPIO.UF, MUNICIPIO.NOME
-    FROM MUNICIPIO
-    INNER JOIN ESCOLA ON MUNICIPIO.MUN_ID = ESCOLA.MUN_ID
-    WHERE ESCOLA.NOME_ESCOLA = :escola AND ROWNUM = 1
-  `, { escola: 'Poliedro' })
+    SELECT * FROM ESCOLA
+    WHERE MUN_ID IN (1100098,1100452)
+  `)
   res.status(200).send(teste)
 });
 
