@@ -1,7 +1,7 @@
 import pandas as pd
 
-previous_filepath = 'microdados_enem2015/DADOS/data_example.csv'
-new_filepath = 'microdados_enem2015/DADOS/new_data_example.csv'
+previous_filepath = 'tables/escola.csv'
+new_filepath = 'tables/new_escola.csv'
 
 
 def remove_blank_spaces(previous_filepath, new_filepath, first_file):
