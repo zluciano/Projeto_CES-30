@@ -1,9 +1,9 @@
-const express = require('express');
-const cors = require('cors');
+const express = require('express')
+const cors = require('cors')
 const bodyParser = require('body-parser')
-const oracledb = require('oracledb');
+const oracledb = require('oracledb')
 
-let _connection = null;
+let _connection = null
 
 const getConnection = async () => {
   try {
@@ -18,6 +18,7 @@ const getConnection = async () => {
       console.log('Connection already opened\n')
     }
   } catch (err) {
+    _connection = null
     console.log("Error: ", err)
   }
   return _connection
@@ -25,7 +26,7 @@ const getConnection = async () => {
 
 const closeConnection = async () => {
   try {
-    await _connection.close();
+    await _connection.close()
     console.log(`connection closed\n`)
   } catch (err) {
     console.log("Error when closing the database connection: ", err)
@@ -35,10 +36,10 @@ const closeConnection = async () => {
 const executeQuery = async (query, params = {}) => {
   try {
     const connection = await getConnection()
-    return await connection.execute(query, params);
+    return await connection.execute(query, params)
   } catch (err) {
     console.log("Error: ", err)
-    return null;
+    return null
   }
 }
 
@@ -127,6 +128,6 @@ app.listen(3001, async () => {
 })
 
 process.on('SIGINT', async () => {
-  await closeConnection();
+  await closeConnection()
   process.exit()
 })
