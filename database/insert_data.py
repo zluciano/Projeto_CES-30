@@ -1,6 +1,8 @@
-table_name = "escola"
-table_filepath = "tables/" + str(table_name) + ".csv"
-# table_filepath = 'tables/escola_exemplo.csv'
+# table_name = "escola"
+# table_name = "enem_escola"
+table_name = "municipio"
+# table_filepath = "tables/" + str(table_name) + ".csv"
+table_filepath = "tables/" + str(table_name) + "_exemplo" + ".csv"
 
 insert_queries_filepath = "SQLs/insert/insert_" + table_name + ".sql"
 
@@ -23,14 +25,20 @@ with open(table_filepath, 'r', encoding='utf-8-sig') as table_file:
         row_split[-1] = row_split[-1].split("\n")[0]
 
         for value in row_split:
-
-            if value == row_split[1]:
-                query += "'" + str(value) + "'"
-            else:
-                query += str(value)
+            if table_name == "escola" or table_name == "enem_escola":
+                if value == row_split[1]:
+                    query += "q'" + str(value) + "'"
+                else:
+                    query += str(value)
+            elif table_name == "municipio":
+                if value == row_split[1] or value == row_split[2]:
+                    query += "q'" + str(value) + "'"
+                else:
+                    query += str(value)
 
             if value != row_split[-1]:
                 query += ", "
+
         query += ");\n"
 
         f.write(query)
