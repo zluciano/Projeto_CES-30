@@ -6,6 +6,7 @@ import Container from '@material-ui/core/Container';
 import Link from '@material-ui/core/Link';
 import Plot from './Plot';
 import Table from './Table';
+import Tabs from './Tabs';
 
 function Copyright() {
   return (
@@ -53,13 +54,19 @@ export default function Page() {
           Projeto CES-30
         </Typography>
         <Typography variant="h5" component="h2" gutterBottom>
-          {'Gráfico do ENEM a respeito das escolas participantes'}
-          {'É também verificado a distribuição por municípios'}
+          {'Gráfico do ENEM a respeito das escolas participantes.'}
+          {' É também verificado a distribuição por municípios'}
         </Typography>
         <Typography variant="body1">
             <div className={classes.body}>
-                {/* <Plot/> */}
-                <Table/>
+                {/* <Table/> */}
+                <Tabs/>
+            </div>
+            <div className={classes.body}>
+                <Typography variant="h5" component="h2" gutterBottom>
+                    {'Gráfico do ENEM.'}
+                </Typography>
+                <Plot/>
             </div>
         </Typography>
         </div>
