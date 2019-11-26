@@ -3,33 +3,44 @@ const cors = require('cors');
 const bodyParser = require('body-parser')
 const oracledb = require('oracledb');
 
-let connection;
+let _connection = null;
 
-(async function () {
-  try {
-    connection = await oracledb.getConnection({
-      user: 'IsabelleO',
-      password: 'IsabelleO',
-      connectString: '(DESCRIPTION =(ADDRESS = (PROTOCOL = TCP)(HOST = 161.24.2.244)(PORT = 1521))(CONNECT_DATA =(SID= ORCL)))'
-    });
-
-    console.log("Successfully connected to Oracle!")
-    const res = await connection.execute(`
-      SELECT * FROM MUNICIPIO
-    `);
-    console.log(res);
-  } catch (err) {
-    console.log("Error: ", err);
-  } finally {
-    if (connection) {
-      try {
-        await connection.close();
-      } catch (err) {
-        console.log("Error when closing the database connection: ", err);
-      }
+const getConnection = async () => {
+  try{
+    if(_connection === null) {
+      _connection = await oracledb.getConnection({
+        user: 'IsabelleO',
+        password: 'IsabelleO',
+        connectString: '(DESCRIPTION =(ADDRESS = (PROTOCOL = TCP)(HOST = 161.24.2.244)(PORT = 1521))(CONNECT_DATA =(SID= ORCL)))'
+      })
+      console.log('Connection opened =)')
+    } else {
+      console.log('Connection unopened =(')
     }
+  } catch (err) {
+    console.log("Error: ", err)
   }
-})()
+  return _connection
+}
+
+const closeConnection = async () => {
+  try {
+    await _connection.close();
+    console.log(`connection closed\n`)
+  } catch (err) {
+    console.log("Error when closing the database connection: ", err)
+  }
+}
+
+const executeQuery = async (query) => {
+  try {
+    const connection = await getConnection();
+    return await connection.execute(query).then(res => res.rows);
+  } catch(err) {
+    console.log("Error: ", err)
+    return null;
+  }
+}
 
 let app = express()
   .use(cors())
@@ -53,34 +64,22 @@ app.get('/', (req, res) => {
       { x: 8, y: 1 },
     ]
   }
-  res.status(200).send(response);
+  res.status(200).send(response)
 })
 
-// app.get('/sql', (req, res) => {
-//   const query = req.body;
-//   const queryTest = "SELECT department_id, department_name "
-//   "FROM departments "
-//   "WHERE department_id < 70 "
-//   "ORDER BY department_id"
+app.get('/sql', async (req, res) => {
+  const query = req.body;
+  const teste = await executeQuery(`
+    SELECT * FROM MUNICIPIO
+  `)
+  res.status(200).send(teste)
+});
 
-//   oracledb.getConnection({
-//     user          : "hr",
-//     password      : "welcome",
-//     connectString : "localhost/XE"
-//   },
+app.listen(3001, async () => {
+  console.log('Example app listening on port 3001!')
+})
 
-//   function(err, connection) {
-//     if (err) { console.error(err); return; }
-//     connection.execute(queryTest,
-//       function(err, result) {
-//         if (err) { console.error(err); return; }
-//         console.log(result.rows);
-//         const response = result.rows;
-//         res.status(200).send(response);
-//       });
-//   });
-// });
-
-app.listen(3001, () => {
-  console.log('Example app listening on port 3001!');
+process.on('SIGINT', async () => {
+  await closeConnection();
+  process.exit()
 })
