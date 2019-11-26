@@ -3,6 +3,4 @@ node_modules
 *npm-debug.log
 *package-lock.json
 /venv
-database/microdados_enem2015/
-database/microdados_enem_por_escola/
 database/__pycache__/
