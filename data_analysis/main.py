@@ -12,37 +12,38 @@ import pydotplus
 
 print("1")
 
-df = pd.read_csv('MICRODADOS_ENEM_ESCOLA.csv')
+df = pd.read_csv('COMPLETO_MICRODADOS_ENEM_ESCOLA.csv', delimiter=";", engine='python', encoding="ISO-8859-1")
+df = df.dropna(axis=0, how='any')
 
 print("2")
 
 print(df)
 
-feature_cols = ['N_TRANS_ATM', 'N_TRANS_TELLER', 'MONEY_MONTLY_OVERDRAWN',
-             'BANK_FUNDS', 'MONTHLY_CHECKS_WRITTEN', 'N_OF_DEPENDENTS',
-             'CHECKING_AMOUNT', 'MORTGAGE_AMOUNT', 'CREDIT_BALANCE',
-             'PROFESSION', 'MARITAL_STATUS', 'SEX',
-             'HOUSE_OWNERSHIP', 'CAR_OWNERSHIP', 'HAS_CHILDREN']
+feature_cols = ['NU_ANO', 'NU_MEDIA_CN', 'NU_MEDIA_CH', 'NU_MEDIA_LP',
+                'NU_MEDIA_MT', 'NU_MEDIA_RED']
+
+output_column = 'NU_MEDIA_RED'
+feature_cols.remove(output_column)
 
 X = df[feature_cols]
-y = df['BUY_INSURANCE']
+y = df[output_column]
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=1)
 
-clf = DecisionTreeClassifier(criterion="entropy", max_depth=4)
-clf = clf.fit(X_train, y_train)
-y_pred = clf.predict(X_test)
-print("Decision Tree accuracy:", metrics.accuracy_score(y_test, y_pred))
-
 regressor = LinearRegression()  
-regressor.fit(X_train, y_train) #training the algorithm
+regressor.fit(X_train, y_train)  # training the algorithm
 y_pred = regressor.predict(X_test)
-print("Linear regression accuracy:", metrics.accuracy_score(y_test, y_pred))
 
-# dot_data = StringIO()
-# export_graphviz(clf, out_file=dot_data,
-#                 filled=True, rounded=True,
-#                 special_characters=True, feature_names = feature_cols,class_names=['0','1'])
-# graph = pydotplus.graph_from_dot_data(dot_data.getvalue())
-# graph.write_png('diabetes.png')
-# Image(graph.create_png())
+print("")
+print("explained_variance_score:", metrics.explained_variance_score(y_test, y_pred))
+print("max_error:", metrics.max_error(y_test, y_pred))
+print("mean_absolute_error:", metrics.mean_absolute_error(y_test, y_pred))
+print("mean_squared_error:", metrics.mean_squared_error(y_test, y_pred))
+print("mean_squared_log_error:", metrics.mean_squared_log_error(y_test, y_pred))
+print("median_absolute_error:", metrics.median_absolute_error(y_test, y_pred))
+print("r2_score:", metrics.r2_score(y_test, y_pred))
+
+print("")
+
+for i in range(1, 10):
+    print("Real -> Previsto: " + str(y_test[i:i+1].tolist()[0]) + " -> " + str(y_pred[i:i+1][0]))
