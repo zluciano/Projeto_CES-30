@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
 import { get } from 'axios'
 import {XYPlot, XAxis, YAxis, HorizontalGridLines, LineSeries} from 'react-vis';
-import './Plot';
-
+import './Page';
 import './App.css'
-import Plot from './Plot';
+
+import Page from './Page';
 
 class App extends Component {
   constructor(props){
@@ -37,7 +37,7 @@ class App extends Component {
           <XAxis />
           <YAxis />
         </XYPlot>         */}
-        <Plot></Plot>
+        <Page></Page>
       </div>
       );
   }
