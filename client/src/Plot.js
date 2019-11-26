@@ -29,8 +29,8 @@ function Plot() {
     // space of its parent element automatically
     <div
       style={{
-        width: '800px',
-        height: '400px'
+        width: '840px',
+        height: '300px'
       }}
     >
       <Chart data={data} axes={axes} />
