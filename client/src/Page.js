@@ -11,9 +11,8 @@ import Tabs from './Tabs';
 function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary">
-      {'Copyright © '}
       <Link color="inherit" href="https://material-ui.com/">
-        Your Website
+        Carlos Matheus, José Luciano, Igor Bragaia, Igor Mourão, Isabelle Ferreira, Guilherme Mattos, Gabriela Barroso.
       </Link>{' '}
       {new Date().getFullYear()}
       {'.'}
@@ -68,13 +67,14 @@ export default function Page() {
                 </Typography>
                 <Plot/>
             </div>
+            <div className={classes.body}></div>
         </Typography>
         </div>
       </Container>
       <footer className={classes.footer}>
         <Container maxWidth="md">
           <Typography variant="body1">
-              My sticky footer can be found here.
+            Projeto CES-30
           </Typography>
           <Copyright />
         </Container>
