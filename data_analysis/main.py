@@ -10,7 +10,13 @@ from IPython.display import Image
 from sklearn.tree import export_graphviz
 import pydotplus
 
+print("1")
+
 df = pd.read_csv('MICRODADOS_ENEM_ESCOLA.csv')
+
+print("2")
+
+print(df)
 
 feature_cols = ['N_TRANS_ATM', 'N_TRANS_TELLER', 'MONEY_MONTLY_OVERDRAWN',
              'BANK_FUNDS', 'MONTHLY_CHECKS_WRITTEN', 'N_OF_DEPENDENTS',
