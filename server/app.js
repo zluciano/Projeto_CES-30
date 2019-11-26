@@ -51,36 +51,76 @@ let app = express()
     })
   )
 
+// http://localhost:3001/
 app.get('/', (req, res) => {
-  let response = {
-    values: [
-      { x: 1, y: 2 },
-      { x: 2, y: 10 },
-      { x: 3, y: 5 },
-      { x: 4, y: 6 },
-      { x: 5, y: 7 },
-      { x: 6, y: 11 },
-      { x: 7, y: 9 },
-      { x: 8, y: 1 },
-    ]
-  }
+  res.status(200).send('API Online')
+})
+
+// http://localhost:3001/escolas/rio de janeiro
+app.get('/escolas/:cidade', async (req, res) => {
+  const response = await executeQuery(`
+    SELECT ESCOLA.NOME_ESCOLA
+    FROM ESCOLA
+    JOIN MUNICIPIO ON MUNICIPIO.MUN_ID = ESCOLA.MUN_ID
+    WHERE LOWER(MUNICIPIO.NOME) = LOWER(:cidade)
+    ORDER BY ESCOLA.NOME_ESCOLA
+  `, req.params)
   res.status(200).send(response)
 })
 
-app.get('/escola', async (req, res) => {
-  const query = req.body;
-  // const teste = await executeQuery(`
-  //   SELECT MUNICIPIO.UF, MUNICIPIO.NOME
-  //   FROM MUNICIPIO
-  //   INNER JOIN ESCOLA ON MUNICIPIO.MUN_ID = ESCOLA.MUN_ID
-  //   WHERE ESCOLA.NOME_ESCOLA = :escola AND ROWNUM = 1
-  // `, { escola: 'Poliedro' })
-  const teste = await executeQuery(`
-    SELECT * FROM ESCOLA
-    WHERE MUN_ID IN (1100098,1100452)
-  `)
-  res.status(200).send(teste)
-});
+// http://localhost:3001/escola/COLEGIO CLASSE A
+app.get('/escola/:escola', async (req, res) => {
+  const response = await executeQuery(`
+    SELECT MUNICIPIO.UF, MUNICIPIO.NOME
+    FROM MUNICIPIO
+    INNER JOIN ESCOLA ON MUNICIPIO.MUN_ID = ESCOLA.MUN_ID
+    WHERE LOWER(ESCOLA.NOME_ESCOLA) = LOWER(:escola) AND ROWNUM = 1
+  `, req.params)
+  res.status(200).send(response)
+})
+
+// http://localhost:3001/enem/ano/2015
+app.get('/enem/ano/:ano', async (req, res) => {
+  const response = await executeQuery(`
+    SELECT ESCOLA.NOME_ESCOLA, ((ENEM_ESCOLA.NU_MEDIA_CN + ENEM_ESCOLA.NU_MEDIA_CH +
+      ENEM_ESCOLA.NU_MEDIA_LP + ENEM_ESCOLA.NU_MEDIA_MT + ENEM_ESCOLA.NU_MEDIA_REDACAO)/5) "Media"
+    FROM ENEM_ESCOLA
+    JOIN ESCOLA ON ENEM_ESCOLA.NOME_ESCOLA = ESCOLA.NOME_ESCOLA
+    WHERE ENEM_ESCOLA.ENEM_ID = :ano
+    ORDER BY "Media" DESC
+  `, req.params)
+  res.status(200).send(response)
+})
+
+// http://localhost:3001/enem/escola/COLEGIO CLASSE A
+app.get('/enem/escola/:escola', async (req, res) => {
+  const response = await executeQuery(`
+    SELECT ENEM_ESCOLA.ENEM_ID "Ano", ENEM_ESCOLA.NU_PARTICIPANTES, 
+        ENEM_ESCOLA.NU_PARTICIPANTES_ESPEC, ((ENEM_ESCOLA.NU_MEDIA_CN + ENEM_ESCOLA.NU_MEDIA_CH +
+        ENEM_ESCOLA.NU_MEDIA_LP + ENEM_ESCOLA.NU_MEDIA_MT + ENEM_ESCOLA.NU_MEDIA_REDACAO)/5) "Media",
+        ENEM_ESCOLA.NU_MEDIA_CN, ENEM_ESCOLA.NU_MEDIA_CH, 
+        ENEM_ESCOLA.NU_MEDIA_LP, ENEM_ESCOLA.NU_MEDIA_MT, ENEM_ESCOLA.NU_MEDIA_REDACAO
+    FROM ENEM_ESCOLA
+    JOIN ESCOLA ON ENEM_ESCOLA.NOME_ESCOLA = ESCOLA.NOME_ESCOLA
+    WHERE ESCOLA.NOME_ESCOLA = :escola
+    ORDER BY ENEM_ESCOLA.ENEM_ID
+  `, req.params)
+  res.status(200).send(response)
+})
+
+// http://localhost:3001/enem/estatisticas
+app.get('/enem/estatisticas', async (req, res) => {
+  const response = await executeQuery(`
+    SELECT ENEM_ESCOLA.NU_PARTICIPANTES, ((ENEM_ESCOLA.NU_MEDIA_CN + ENEM_ESCOLA.NU_MEDIA_CH +
+      ENEM_ESCOLA.NU_MEDIA_LP + ENEM_ESCOLA.NU_MEDIA_MT + ENEM_ESCOLA.NU_MEDIA_REDACAO)/5) "Media"
+    FROM ENEM_ESCOLA
+    JOIN ESCOLA
+      ON ENEM_ESCOLA.NOME_ESCOLA = ESCOLA.NOME_ESCOLA
+    WHERE ENEM_ESCOLA.ENEM_ID > 2010
+    ORDER BY "Media" DESC
+  `, req.params)
+  res.status(200).send(response)
+})
 
 app.listen(3001, async () => {
   console.log('Example app listening on port 3001!')
