@@ -4,3 +4,4 @@ node_modules
 *package-lock.json
 /venv
 database/__pycache__/
+MICRODADOS_ENEM_ESCOLA.csv
