@@ -41,7 +41,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function Page() {
+export default function Page(props) {
   const classes = useStyles();
 
   return (
@@ -53,8 +53,7 @@ export default function Page() {
           Projeto CES-30
         </Typography>
         <Typography variant="h5" component="h2" gutterBottom>
-          {'Gráfico do ENEM a respeito das escolas participantes.'}
-          {' É também verificado a distribuição por municípios'}
+          {'Aqui você pode pesquisar tabelas de acordo com os 4 tipo de pesquisa a seguir:'}
         </Typography>
         <Typography variant="body1">
             <div className={classes.body}>
@@ -63,7 +62,8 @@ export default function Page() {
             </div>
             <div className={classes.body}>
                 <Typography variant="h5" component="h2" gutterBottom>
-                    {'Gráfico do ENEM.'}
+                    {'Distribuição da quantidade de alunos que atingiu cada nota no enem.'}
+                    {'Os resultados estão organizados de 5 em 5 pontos.'}
                 </Typography>
                 <Plot/>
             </div>

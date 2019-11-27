@@ -11,12 +11,11 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function Input() {
+export default function Input(props) {
   const classes = useStyles();
-
   return (
     <form className={classes.root} noValidate autoComplete="off">
-      <TextField id="standard-basic" label="Standard" />
+      <TextField id={props.nome} label="Escreva aqui" onBlur={props.change_input} />
     </form>
   );
 }

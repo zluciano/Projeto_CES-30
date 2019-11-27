@@ -63,7 +63,7 @@ app.get('/escolas/:cidade', async (req, res) => {
     SELECT ESCOLA.NOME_ESCOLA
     FROM ESCOLA
     JOIN MUNICIPIO ON MUNICIPIO.MUN_ID = ESCOLA.MUN_ID
-    WHERE LOWER(MUNICIPIO.NOME) = LOWER(:cidade)
+    WHERE LOWER(MUNICIPIO.NOME) = LOWER(:cidade) AND ROWNUM <= 7
     ORDER BY ESCOLA.NOME_ESCOLA
   `, req.params)
   res.status(200).send(response)
@@ -87,7 +87,7 @@ app.get('/enem/ano/:ano', async (req, res) => {
       ENEM_ESCOLA.NU_MEDIA_LP + ENEM_ESCOLA.NU_MEDIA_MT + ENEM_ESCOLA.NU_MEDIA_REDACAO)/5) "Media"
     FROM ENEM_ESCOLA
     JOIN ESCOLA ON ENEM_ESCOLA.NOME_ESCOLA = ESCOLA.NOME_ESCOLA
-    WHERE ENEM_ESCOLA.ENEM_ID = :ano
+    WHERE ENEM_ESCOLA.ENEM_ID = :ano AND ROWNUM <= 7
     ORDER BY "Media" DESC
   `, req.params)
   res.status(200).send(response)
@@ -103,7 +103,7 @@ app.get('/enem/escola/:escola', async (req, res) => {
         ENEM_ESCOLA.NU_MEDIA_LP, ENEM_ESCOLA.NU_MEDIA_MT, ENEM_ESCOLA.NU_MEDIA_REDACAO
     FROM ENEM_ESCOLA
     JOIN ESCOLA ON ENEM_ESCOLA.NOME_ESCOLA = ESCOLA.NOME_ESCOLA
-    WHERE ESCOLA.NOME_ESCOLA = :escola
+    WHERE ESCOLA.NOME_ESCOLA = :escola AND ROWNUM <= 7
     ORDER BY ENEM_ESCOLA.ENEM_ID
   `, req.params)
   res.status(200).send(response)
@@ -112,8 +112,8 @@ app.get('/enem/escola/:escola', async (req, res) => {
 // http://localhost:3001/enem/estatisticas
 app.get('/enem/estatisticas', async (req, res) => {
   const response = await executeQuery(`
-    SELECT ENEM_ESCOLA.NU_PARTICIPANTES, ((ENEM_ESCOLA.NU_MEDIA_CN + ENEM_ESCOLA.NU_MEDIA_CH +
-      ENEM_ESCOLA.NU_MEDIA_LP + ENEM_ESCOLA.NU_MEDIA_MT + ENEM_ESCOLA.NU_MEDIA_REDACAO)/5) "Media"
+    SELECT ((ENEM_ESCOLA.NU_MEDIA_CN + ENEM_ESCOLA.NU_MEDIA_CH +
+      ENEM_ESCOLA.NU_MEDIA_LP + ENEM_ESCOLA.NU_MEDIA_MT + ENEM_ESCOLA.NU_MEDIA_REDACAO)/5) "Media", ENEM_ESCOLA.NU_PARTICIPANTES
     FROM ENEM_ESCOLA
     JOIN ESCOLA
       ON ENEM_ESCOLA.NOME_ESCOLA = ESCOLA.NOME_ESCOLA

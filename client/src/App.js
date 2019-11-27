@@ -9,19 +9,6 @@ import Page from './Page';
 class App extends Component {
   constructor(props){
     super(props)
-    this.state = {
-      value: [],
-    }
-  }
-
-  componentDidMount = () => {
-    get(
-      'http://localhost:3001/'
-    )
-    .then(res => {
-      this.setState({ value: res.data.values })
-    })
-    .catch(err => console.log(err))
   }
 
   render = () => {
